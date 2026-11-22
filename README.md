@@ -74,3 +74,33 @@ python src/main.py -s bad_cmd.json -o output.bin -t
 Должно вывести:
 Ошибка: Неизвестная команда: invalid_cmd
 ````
+
+## Этап 2. Формирование машинного кода
+
+На данном этапе реализовано преобразование промежуточного представления в последовательность байт (машинный код) и запись в двоичный файл.
+
+**Пример запуска в режиме тестирования:**
+
+````bash
+python src/main.py -s test_program.json -o output.bin -t
+
+Ожидаемый вывод:
+0x8B, 0x15, 0x00
+0x08, 0x00, 0x00
+0x6A, 0x27, 0x00
+0x01, 0x00, 0x00
+
+```bash
+python -m unittest discover -s tests
+
+Ожидаемый вывод
+Ran 6 tests in 0.001s
+
+OK
+
+```bash
+python src/main.py -s test_program.json -o output.bin
+
+Ожидаемый вывод:
+Размер файла: 12 байт.
+````

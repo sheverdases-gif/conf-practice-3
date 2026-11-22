@@ -35,3 +35,4 @@ class TestAssembler(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    

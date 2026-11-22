@@ -3,12 +3,13 @@
 import argparse
 import sys
 from assembler import load_source, translate_to_ir
+from codegen import generate_machine_code
 
 
 def parse_arguments() -> argparse.Namespace:
     """Парсит аргументы командной строки."""
     parser = argparse.ArgumentParser(
-        description="Ассемблер для УВМ (Этап 1)."
+        description="Ассемблер для УВМ (Этап 2)."
     )
     parser.add_argument(
         "--source", "-s", type=str, required=True,
@@ -20,18 +21,27 @@ def parse_arguments() -> argparse.Namespace:
     )
     parser.add_argument(
         "--test-mode", "-t", action="store_true",
-        help="Режим тестирования (вывод полей и значений)."
+        help="Режим тестирования (вывод байтов)."
     )
     return parser.parse_args()
 
 
-def print_ir(ir: list) -> None:
-    """Выводит промежуточное представление в формате тестов."""
-    for item in ir:
-        if item["B"] == 0:
-            print(f"Тест (A={item['A']}):")
-        else:
-            print(f"Тест (A={item['A']}, B={item['B']}):")
+def print_hex_bytes(machine_code: bytes) -> None:
+    """Выводит байты в формате 0xXX, как в тестах."""
+    for i in range(0, len(machine_code), 3):
+        chunk = machine_code[i:i+3]
+        hex_str = ", ".join([f"0x{b:02X}" for b in chunk])
+        print(hex_str)
+
+
+def save_to_file(machine_code: bytes, file_path: str) -> None:
+    """Сохраняет байты в двоичный файл."""
+    try:
+        with open(file_path, "wb") as f:
+            f.write(machine_code)
+        print(f"Размер файла: {len(machine_code)} байт.")
+    except IOError as e:
+        raise ValueError(f"Ошибка записи файла: {e}")
 
 
 def main() -> None:
@@ -41,15 +51,16 @@ def main() -> None:
     try:
         source = load_source(args.source)
         ir = translate_to_ir(source)
+        machine_code = generate_machine_code(ir)
+
+        if args.test_mode:
+            print_hex_bytes(machine_code)
+        else:
+            save_to_file(machine_code, args.output)
+
     except ValueError as e:
         print(f"Ошибка: {e}")
         sys.exit(1)
-
-    if args.test_mode:
-        print_ir(ir)
-    else:
-        print(f"Программа успешно прочитана. Команд: {len(ir)}.")
-        print(f"Выходной файл {args.output} будет создан на Этапе 2.")
 
 
 if __name__ == "__main__":
