@@ -1,0 +1,6 @@
+[
+  { "command": "load_const", "operand": 344 },
+  { "command": "read_mem" },
+  { "command": "write_mem", "operand": 630 },
+  { "command": "sgn" }
+]

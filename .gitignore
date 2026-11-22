@@ -1,0 +1,41 @@
+# Байт-код и кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Пакеты и сборка
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Тесты и покрытие
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Настройки IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Файлы ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Логи
+*.log
